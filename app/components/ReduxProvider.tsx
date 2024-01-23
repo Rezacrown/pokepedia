@@ -3,8 +3,8 @@ import { useRef } from "react";
 import { Provider } from "react-redux";
 
 import { store, AppStore } from "../redux/store";
-import { getQuery as getQueryPokemon } from "../redux/query";
-import { getMorePaginate } from "../redux/paginate";
+import { getQuery as getQueryPokemon } from "../redux/querySlice";
+import { getDataPaginate } from "../redux/paginateSlice";
 
 export default function ReduxProvider({
   children,
@@ -20,12 +20,6 @@ export default function ReduxProvider({
       getQueryPokemon({
         keyQuery: "pokemon",
         valQuery: "",
-      })
-    );
-    storeRef.current.dispatch(
-      getMorePaginate({
-        limit: 20,
-        offset: 0,
       })
     );
   }

@@ -1,11 +1,12 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getQuery as getQueryPokemon } from "../redux/query";
+import { getQuery as getQueryPokemon } from "../redux/querySlice";
 
+import debounce from "debounce";
+import { useState } from "react";
 export default function Navbar() {
   const dispach = useDispatch();
   const queryPokemon = useSelector(
@@ -16,17 +17,21 @@ export default function Navbar() {
       }
   );
 
-  const [searching, setSearching] = useState(queryPokemon.valQuery);
+  const [search, setSearch] = useState(queryPokemon.valQuery);
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearching(e.target.value);
+    setSearch(e.target.value);
+    // debounce(() => {
     dispach(
       getQueryPokemon({
         keyQuery: "pokemon",
-        valQuery: e.target.value,
+        valQuery: search,
       })
     );
+    // }, 200);
   };
+
+  debounce(handleChangeSearch, 200);
 
   return (
     <div className="navbar bg-base-100 justify-center">
@@ -42,7 +47,7 @@ export default function Navbar() {
           <input
             name="searching"
             type="text"
-            value={searching}
+            value={search}
             onChange={(e) => handleChangeSearch(e)}
             placeholder="Pikachu, Charizard, etc.."
             className="input input-bordered w-44 md:w-auto input-accent"
@@ -52,7 +57,7 @@ export default function Navbar() {
       <div className="ml-auto hidden md:block">
         <input
           type="checkbox"
-          value="dark"
+          value={"synthwave"}
           className="toggle theme-controller"
         />
       </div>

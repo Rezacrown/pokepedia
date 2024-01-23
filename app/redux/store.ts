@@ -1,6 +1,6 @@
-import { configureStore, createListenerMiddleware } from "@reduxjs/toolkit";
-import { pokemonQuery } from "./query";
-import { pokemonPaginate } from "./paginate";
+import { configureStore } from "@reduxjs/toolkit";
+import { pokemonQuery } from "./querySlice";
+import { pokemonPaginate } from "./paginateSlice";
 
 export const store = () => {
   return configureStore({
@@ -10,14 +10,6 @@ export const store = () => {
     },
   });
 };
-
-const listener = createListenerMiddleware({
-  extra: {
-    getData: () => {},
-  },
-});
-
-// listener.startListening({a})
 
 // Infer the type of makeStore
 export type AppStore = ReturnType<typeof store>;

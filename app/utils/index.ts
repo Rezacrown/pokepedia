@@ -29,12 +29,7 @@ export const getAllPokemon = async ({
 
 export const getPokemonDetail = async (name: string) => {
   try {
-    const res = await fetch(`${BASE_URL}/pokemon/${name}`, {
-      cache: "default",
-      next: {
-        revalidate: false,
-      },
-    });
+    const res = await fetch(`${BASE_URL}/pokemon/${name}`, {});
 
     const data = await res.json();
 

@@ -1,6 +1,6 @@
 import Breadcrumb from "./components/Breadcrumb";
 import PokemonList from "./components/PokemonList";
-import { getDataPaginate } from "./redux/paginate";
+import { getDataPaginate } from "./redux/paginateSlice";
 
 import { store } from "./redux/store";
 
@@ -24,8 +24,6 @@ export default async function Home() {
     return response;
   }
 
-  // const data = globalStore.getState().pokemonPaginate.data;
-
   // get data fetching from store redux
   const data = (await getStateFromServer()).payload as PokemonDatas;
 
@@ -33,14 +31,14 @@ export default async function Home() {
     <>
       <Breadcrumb />
 
-      <h2>limit: {data.results.length}</h2>
-
-      <div className="text-black text-lg mb-6">
+      <div className=" text-lg mb-6 text-pretty">
         Total pokemon:{" "}
         <span className="font-semibold">{data?.count ? data.count : 0}</span>{" "}
       </div>
 
-      {data?.results && <PokemonList results={data.results as any} />}
+      <div className="overflow-y-scroll">
+        {data?.results && <PokemonList results={data.results as any} />}
+      </div>
     </>
   );
 }

@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="bumblebee">
+    <html lang="en" data-theme={"bumblebee"}>
       <body className={inter.className}>
         <ReduxProvider>
           <div className="container px-6 md:px-12 lg:px-36">

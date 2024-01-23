@@ -43,7 +43,7 @@ export default async function PokemonDetail({
                         {key === "stat" && (
                           <h6
                             key={idx}
-                            className="text-sm md:text-lg font-bold text-gray-900 my-2"
+                            className="text-sm md:text-lg font-bold text-pretty my-2"
                           >
                             {key == "stat" && val.name + ": "}{" "}
                             <span className="font-normal text-purple-400 mx-5">
@@ -62,7 +62,7 @@ export default async function PokemonDetail({
                 </>
               ))}
 
-              <h6 className="text-sm md:text-lg font-bold text-gray-900 my-2">
+              <h6 className="text-sm md:text-lg font-bold text-pretty my-2">
                 weight:
                 <span className="font-normal text-purple-400 mx-5">
                   {data.weight}
