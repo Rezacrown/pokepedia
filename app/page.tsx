@@ -1,70 +1,51 @@
-import Link from "next/link";
-import { getAllPokemon } from "./utils";
-import Image from "next/image";
 import Breadcrumb from "./components/Breadcrumb";
-import Pagination from "./components/Pagination";
+import PokemonList from "./components/PokemonList";
+import { getDataPaginate } from "./redux/paginate";
 
-//
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: { [x: string]: string };
-}) {
-  const currentPage = Number(searchParams.page) || 1;
+import { store } from "./redux/store";
 
-  const data: PokemonDatas = await getAllPokemon({
-    limit: 20,
-    offset: currentPage > 1 ? currentPage * 20 : 0,
-  });
+export default async function Home() {
+  // initial redux store in server component
+  const globalStore = store();
+
+  // initial dispatch event in server component
+  async function getStateFromServer() {
+    // "use server";
+
+    const limit = globalStore.getState().pokemonPaginate.limit;
+
+    const response = globalStore.dispatch(
+      getDataPaginate({
+        limit: limit || globalStore.getState().pokemonPaginate.limit || 20,
+        offset: 0,
+      })
+    );
+
+    return response;
+  }
+
+  // const data = globalStore.getState().pokemonPaginate.data;
+
+  // get data fetching from store redux
+  const data = (await getStateFromServer()).payload as PokemonDatas;
 
   return (
     <>
       <Breadcrumb />
 
+      <h2>limit: {data.results.length}</h2>
+
       <div className="text-black text-lg mb-6">
-        Total pokemon: <span className="font-semibold">{data.count}</span>{" "}
+        Total pokemon:{" "}
+        <span className="font-semibold">{data?.count ? data.count : 0}</span>{" "}
       </div>
 
-      <div className="">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-5">
-          {data!.results.map((item, idx) => {
-            return (
-              <div key={idx} className="card border shadow shadow-[#FFEEB0]">
-                <div className="card-body text-center">
-                  <div className="image-full mx-auto">
-                    <Image
-                      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                        currentPage * (idx + 1)
-                      }.png`}
-                      alt=""
-                      height={80}
-                      width={80}
-                      priority
-                    />
-                  </div>
-
-                  <Link
-                    href={`/${item.name.toLowerCase()}`}
-                    className="text-red-600"
-                  >
-                    <h2>{item.name.toLowerCase()}</h2>
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <Pagination
-        totalPage={data.count / 20}
-        currentPage={currentPage > 1 ? currentPage : 1}
-      />
+      {data?.results && <PokemonList results={data.results as any} />}
     </>
   );
 }
 
-type PokemonDatas = {
+export type PokemonDatas = {
   count: number;
   next: null | string;
   previous: null | string;

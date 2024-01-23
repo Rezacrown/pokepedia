@@ -5,17 +5,12 @@ import Breadcrumb from "../components/Breadcrumb";
 
 export default async function PokemonDetail({
   params,
+  searchParams,
 }: {
   params: { pokemon: string };
+  searchParams: { [x: string]: string };
 }) {
   const data = (await getPokemonDetail(params.pokemon)) as PokemonDetailData;
-
-  const [keyStat, valueStat] = data.stats.filter((item) => {
-    return {
-      key: Object.entries(item)[0],
-      value: Object.entries(item)[1],
-    };
-  });
 
   //   console.log({ data: data.stats[0].stat.name });
 
@@ -66,6 +61,18 @@ export default async function PokemonDetail({
                   })}
                 </>
               ))}
+
+              <h6 className="text-sm md:text-lg font-bold text-gray-900 my-2">
+                weight:
+                <span className="font-normal text-purple-400 mx-5">
+                  {data.weight}
+                </span>
+                <progress
+                  className="progress progress-accent w-44 md:w-full "
+                  value={data.weight}
+                  max=""
+                />
+              </h6>
             </div>
           </div>
         </div>
@@ -82,6 +89,7 @@ type PokemonDetailData = {
   };
   stats: stats[];
   moves: [];
+  weight: number;
 };
 
 type stats = {

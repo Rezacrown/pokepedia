@@ -1,3 +1,5 @@
+import { PokemonDatas } from "../page";
+
 const BASE_URL = "https://pokeapi.co/api/v2";
 
 export const getAllPokemon = async ({
@@ -11,14 +13,13 @@ export const getAllPokemon = async ({
     const res = await fetch(
       `${BASE_URL}/pokemon?offset=${offset}&limit=${limit}`,
       {
-        cache: "no-store",
+        cache: "default",
         next: {
           revalidate: false,
         },
       }
     );
-
-    const data = await res.json();
+    const data = (await res.json()) as Awaited<PokemonDatas>;
 
     return data;
   } catch (error) {
@@ -29,7 +30,7 @@ export const getAllPokemon = async ({
 export const getPokemonDetail = async (name: string) => {
   try {
     const res = await fetch(`${BASE_URL}/pokemon/${name}`, {
-      cache: "force-cache",
+      cache: "default",
       next: {
         revalidate: false,
       },

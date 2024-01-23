@@ -2,7 +2,32 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getQuery as getQueryPokemon } from "../redux/query";
+
 export default function Navbar() {
+  const dispach = useDispatch();
+  const queryPokemon = useSelector(
+    (state: any) =>
+      state.pokemonQuery as {
+        keyQuery: string | "pokemon";
+        valQuery: string;
+      }
+  );
+
+  const [searching, setSearching] = useState(queryPokemon.valQuery);
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearching(e.target.value);
+    dispach(
+      getQueryPokemon({
+        keyQuery: "pokemon",
+        valQuery: e.target.value,
+      })
+    );
+  };
+
   return (
     <div className="navbar bg-base-100 justify-center">
       <div className="flex">
@@ -17,16 +42,11 @@ export default function Navbar() {
           <input
             name="searching"
             type="text"
+            value={searching}
+            onChange={(e) => handleChangeSearch(e)}
             placeholder="Pikachu, Charizard, etc.."
-            className="input input-bordered w-44 md:w-auto"
+            className="input input-bordered w-44 md:w-auto input-accent"
           />
-        </div>
-        <div className="dropdown dropdown-end">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-ghost btn-circle avatar"
-          ></div>
         </div>
       </div>
       <div className="ml-auto hidden md:block">
