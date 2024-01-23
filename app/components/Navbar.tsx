@@ -38,7 +38,7 @@ export default function Navbar() {
       <div className="flex">
         <Link href={"/"} className="btn btn-ghost text-xl">
           <h3 className="text-[#FAAA6D]">
-            Poke<span className="text-[#F2684A]">Pedia</span>
+            RezaPoke<span className="text-[#F2684A]">Pedia</span>
           </h3>
         </Link>
       </div>
