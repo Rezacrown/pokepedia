@@ -7,8 +7,8 @@ import ReduxProvider from "./components/ReduxProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PokePedia",
-  description: "Pokemon Pedia",
+  title: "RezaPokePedia",
+  description: "Reza Pokemon dataPedia",
 };
 
 export default function RootLayout({
